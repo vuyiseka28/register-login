@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Management</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button{
+      background-color: #5a84b1;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Details</h1>
+
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      User rows will be dynamically added here 
+    </tbody>
+  </table>
+
+  <script>
+  
+    var users = JSON.parse(localStorage.getItem('users')) || [];
+
+    
+    function populateUserTable() {
+      var tableBody = document.querySelector('#userTable tbody');
+
+      
+      tableBody.innerHTML = '';
+
+      
+      users.forEach(function(user, index) {
+        var row = document.createElement('tr');
+
+        
+        var nameCell = document.createElement('td');
+        nameCell.textContent = user.name;
+        row.appendChild(nameCell);
+
+        
+        var emailCell = document.createElement('td');
+        emailCell.textContent = user.emailAddress;
+        row.appendChild(emailCell);
+
+      
+        var actionCell = document.createElement('td');
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove User';
+        removeButton.addEventListener('click', function() {
+          removeUser(index);
+        });
+        actionCell.appendChild(removeButton);
+        row.appendChild(actionCell);
+
+        
+        tableBody.appendChild(row);
+      });
+    }
+
+    
+    populateUserTable();
+
+    
+    function removeUser(index) {
+    
+      users.splice(index, 1);
+
+    
+      localStorage.setItem('users', JSON.stringify(users));
+
+      populateUserTable();
+    }
+  </script>
+</body>
+</html>
+
